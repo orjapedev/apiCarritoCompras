@@ -18,6 +18,7 @@ namespace apiCarritoCompras.Model
         }
 
         public virtual DbSet<Plane> Planes { get; set; }
+        public virtual DbSet<PlanesProducto> PlanesProductos { get; set; }
         public virtual DbSet<Producto> Productos { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
 
@@ -36,15 +37,51 @@ namespace apiCarritoCompras.Model
 
             modelBuilder.Entity<Plane>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.HasKey(e => e.IdPlan)
+                    .HasName("PK__Planes__FB8102AECEAAF02E");
+
+                entity.Property(e => e.Codigo)
+                    .IsUnicode(false)
+                    .HasColumnName("codigo");
 
                 entity.Property(e => e.Descripcion)
                     .IsUnicode(false)
                     .HasColumnName("descripcion");
 
+                entity.Property(e => e.Frecuencia)
+                    .IsUnicode(false)
+                    .HasColumnName("frecuencia");
+
+                entity.Property(e => e.Icono)
+                    .IsUnicode(false)
+                    .HasColumnName("icono");
+
+                entity.Property(e => e.Nombre)
+                    .IsUnicode(false)
+                    .HasColumnName("nombre");
+
                 entity.Property(e => e.Valor)
                     .HasColumnType("decimal(18, 0)")
                     .HasColumnName("valor");
+            });
+
+            modelBuilder.Entity<PlanesProducto>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.IdPlan).HasColumnName("idPlan");
+
+                entity.Property(e => e.IdProducto).HasColumnName("idProducto");
+
+                entity.HasOne(d => d.IdPlanNavigation)
+                    .WithMany()
+                    .HasForeignKey(d => d.IdPlan)
+                    .HasConstraintName("FK__PlanesPro__idPro__52593CB8");
+
+                entity.HasOne(d => d.IdProductoNavigation)
+                    .WithMany()
+                    .HasForeignKey(d => d.IdProducto)
+                    .HasConstraintName("FK__PlanesPro__idPro__534D60F1");
             });
 
             modelBuilder.Entity<Producto>(entity =>
@@ -73,7 +110,7 @@ namespace apiCarritoCompras.Model
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.Email)
-                    .HasName("PK__Usuarios__AB6E616519D2FDF9");
+                    .HasName("PK__Usuarios__AB6E6165B63EC561");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(50)
@@ -101,7 +138,7 @@ namespace apiCarritoCompras.Model
                 entity.HasOne(d => d.Plan)
                     .WithMany(p => p.Usuarios)
                     .HasForeignKey(d => d.PlanId)
-                    .HasConstraintName("FK__Usuarios__planId__398D8EEE");
+                    .HasConstraintName("FK__Usuarios__planId__5070F446");
             });
 
             OnModelCreatingPartial(modelBuilder);

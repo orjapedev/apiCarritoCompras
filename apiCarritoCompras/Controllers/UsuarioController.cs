@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace apiCarritoCompras.Controllers
 {
     [ApiController]
-    [Route("api/usuarios")]
+    [Route("usuarios")]
     public class UsuarioController : ControllerBase
     {
         private readonly IJWTService jsonWebToken;
