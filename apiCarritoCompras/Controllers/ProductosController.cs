@@ -11,7 +11,6 @@ namespace apiCarritoCompras.Controllers
 {
 
     [ApiController]
-    [Authorize]
     [Route("productos")]
     public class ProductosController : ControllerBase
     {
@@ -23,7 +22,7 @@ namespace apiCarritoCompras.Controllers
 
             if (request.transaccion == "generico" && request.tipo == 4)
             {
-                var objPlanes = await db.Productos.ToListAsync();
+                var objPlanes = await db.Productos.Where(x => x.Estado == true).ToListAsync();
 
                 if (objPlanes != null)
                 {

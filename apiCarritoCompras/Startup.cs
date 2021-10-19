@@ -48,6 +48,7 @@ namespace apiCarritoCompras
                 };
             });
 
+            services.AddCors();
 
             services.AddScoped<IJWTService, JWTService>();
 
@@ -66,6 +67,11 @@ namespace apiCarritoCompras
 
             app.UseRouting();
 
+            app.UseCors(x => x
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .SetIsOriginAllowed(origin => true) 
+              .AllowCredentials());
 
             app.UseAuthentication();
 
